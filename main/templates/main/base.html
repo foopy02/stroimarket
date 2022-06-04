@@ -1,0 +1,159 @@
+
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">    
+    <link rel="stylesheet" href="{% static 'main/css/styles.css'%}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:ital,wght@0,300;0,700;1,300&family=Poiret+One&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300&display=swap" rel="stylesheet">
+    
+    <title>{% block title %} {% endblock %}</title>
+</head>
+<header >
+    <div class="headerC container">
+        
+        <div class="logo">
+                <a href="{% url 'index' %}">СТРОЙМАРКЕТ</a>
+                <div class="catalog" id="myBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 0 24 24" width="28px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>
+                </div>
+                <!-- The Modal -->
+                <div id="myModal" class="modal">
+
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                    <span class="close">&times;</span> 
+                    <ul class="modal_ul" >
+                        <li class="categories">
+                            строительные материалы
+                            <ul>
+                                <li class="subcategories" ><a href="{% url 'categories' category='krovelnye-materialy' %}">Кровельные материалы</a></li>
+                                <li class="subcategories" ><a href="{% url 'categories' category='dvp-dsp-plity-osb-fanera-pilomaterialy' %}">Двп, дсп, плиты, фанера, пиломатериалы</a></li>
+                                <li class="subcategories" ><a href="{% url 'categories' category='mebelnye-shity' %}">Мебельные щиты</a></li>
+                                <li class="subcategories" ><a href="{% url 'categories' category='stroitelstvo-sten-i-peregorodok' %}">Строительство стен и перегородок</a></li>
+                                <li class="subcategories" ><a href="{% url 'categories' category='stroitelnye-smesi-i-gruntovka' %}">Строительные смеси, грунтовка и гипс</a></li>
+                                <li class="subcategories" ><a href="{% url 'categories' category='paneli-stenovye-i-komplektuyushie' %}">Панели стеновые и комплектующие</a></li>
+                                <li class="subcategories" ><a href="{% url 'categories' category='stroitelnaya-izolyaciya' %}">Строительные сетки</a></li>
+                                <li class="subcategories" ><a href="{% url 'categories' category='elementy-dekora' %}">Элементы декора</a></li>
+                                <li class="subcategories" ><a href="{% url 'categories' category='lestnichnye-elementy' %}">Лестничные элементы</a></li>
+                                <li class="subcategories" ><a href="{% url 'categories' category='kovanye-elementy' %}">Кованые элементы</a></li>
+                            </ul>
+                        </li>
+                        
+                        
+                    </ul>
+                    </div>
+                
+                </div>
+        </div>
+        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Поиск...">
+
+<ul id="myUL">
+    {% for product in all_products %}
+        <li class="list_item"><a href="{% url 'product' id=product.id %}" class="list_item">
+            {% static "main/images/products/" as folder %}
+                  <img width="40" style="margin-right: 10px;" src="{{folder}}/{{product.image}}" alt="">
+            {{product.title}}</a></li>
+    {% endfor %}
+
+</ul>
+        {% if user.is_authenticated %}
+        <div class="user_n_cart">
+            {% if user.username == 'admin' %}
+            <a href="{% url 'all_orders' %}" class="user_logo">
+                <span>Все заказы</span>
+            </a>
+            {% endif %}
+            <a href="#" class="user_logo">
+                <svg xmlns="http://www.w3.org/2000/svg" height="25px" id="user" viewBox="0 0 24 24" width="34px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2m0 10c2.7 0 5.8 1.29 6 2H6c.23-.72 3.31-2 6-2m0-12C9.79 4 8 5.79 8 8s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 10c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <span>{{user}}</span>
+            </a>
+            <a href="{% url 'cart' %}" class="cart_logo">
+                <div class="head_cart">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="30px" id="cart"viewBox="0 0 24 24" width="30px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M15.55 13c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.37-.66-.11-1.48-.87-1.48H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7l1.1-2h7.45zM6.16 6h12.15l-2.76 5H8.53L6.16 6zM7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                    <span id="amount_of_items_in_cart">{{amount}}</span>
+                </div>
+                <span>Корзина</span>
+            </a>
+            <a href="{% url 'logout'%}" class="cart_logo">
+                <span>Выход</span>
+            </a>
+        </div>
+        {% else %}
+        <div class="user_n_cart">
+            <a href="{% url 'register' %}" class="user_logo">
+                <span>Регистрация</span>
+            </a>
+            <a href="{% url 'login' %}" class="cart_logo">
+                <span>Вход</span>
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
+
+</header>
+
+
+<body>
+    {% block content %} 
+    {% endblock %}
+</body>
+
+<footer>
+    <div class="container">
+
+        <div class="footer_top">
+            <ul class="footer_ul">
+                <li><h6>СТРОЙМАРКЕТ</h6>
+                    <ul class="footer_stroimarket">
+                        <li><span>Строймаркет - продажа товаров для строительства и ремонта, квартир, домов, дач и других помещений, а так же продажа товаров для декорирования и создания уюта в доме.</span></li>
+                    </ul>
+                </li>
+                <li>
+                    <h6>Категории</h6>
+                    <ul class="footer_categories">
+                        <li><a href="">Кровельные материалы</a></li>
+                        <li><a href="">Мебельные щиты</a></li>
+                        <li><a href="">Строительство стен</a></li>
+                        <li><a href="">Гипсокартон</a></li>
+                        <li><a href="">Элементы декора</a></li>
+                        <li><a href="">Лестничные элементы</a></li>
+                    </ul>
+                </li>
+                <li><h6>Контакты</h6>
+                    <ul class="footer_contacts">
+                        <li class="icon_info">
+                            
+                            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M6.54 5c.06.89.21 1.76.45 2.59l-1.2 1.2c-.41-1.2-.67-2.47-.76-3.79h1.51m9.86 12.02c.85.24 1.72.39 2.6.45v1.49c-1.32-.09-2.59-.35-3.8-.75l1.2-1.19M7.5 3H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.49c0-.55-.45-1-1-1-1.24 0-2.45-.2-3.57-.57-.1-.04-.21-.05-.31-.05-.26 0-.51.1-.71.29l-2.2 2.2c-2.83-1.45-5.15-3.76-6.59-6.59l2.2-2.2c.28-.28.36-.67.25-1.02C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1z"/></svg>
+                            +7 777 777 77 77</li>
+                        <li class="icon_info">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z"/></svg>
+                            business@gmail.com
+                        </li>
+                        <li class="icon_info"></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+    <div class="footer_bottom">
+        © 2022 Все права защищены.
+    </div>
+
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+<script src="{% static 'main/js/scripts.js'%}"></script>
+</html>

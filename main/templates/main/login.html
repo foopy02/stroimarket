@@ -1,0 +1,35 @@
+{% extends 'main/base.html'%}
+
+{% block title %}
+Логин
+{% endblock %}
+
+{% block content %}
+
+{% if form.errors %}
+       {% for field in form %}
+           {% for error in field.errors %} 
+              <div class="alert alert-danger">
+                   <strong>{{ error|escape }}</strong>
+              </div>
+           {% endfor %}
+       {% endfor %}
+    {% endif %}
+    <div class="container">
+        <h2 class="reg_auth_h mb-4">Авторизация</h2>
+        <form action="" method="POST" style=" width: 50vw; margin-left : 25vw;">
+            {% csrf_token %}
+            <div class="form-row">
+                <label for="id_username">Имя пользователя:</label>
+                <input type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="150" required="" id="id_username">
+            </div>
+        
+            <div class="form-row">
+                <label for="id_password">Пароль:</label>
+                <input type="password" name="password" autocomplete="current-password" required="" id="id_password">
+            </div>
+            <button class="btn mt-2 " type="submit" style="max-width:fit-content;">Вход</button>
+        </form>
+    </div>
+
+{% endblock%}

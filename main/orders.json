@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "username": "admin",
+    "products": [
+      312,
+      183
+    ],
+    "amount": 2,
+    "total": 2950,
+    "datetime": "04/06/2022 19:24:07",
+    "status": "НЕ ОПЛАЧЕНО"
+  }
+]

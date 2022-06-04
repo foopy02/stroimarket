@@ -1,0 +1,70 @@
+{% extends 'main/base.html'%}
+{% load static%}
+
+{% block title %}
+Корзина
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <table class="table table-striped mb-3 mt-3" >
+        <tbody>
+            <tr class="header">
+                <th class="image">&nbsp;</th>
+                <th class="title">Наименование</th>
+                <th class="count">Количество</th>
+                <th class="count">Стоимость</th>
+                <th class="remove">Удалить</th>
+            </tr>
+            {% for product in products %}
+            <tr id="{{product.0.id}}">
+                <td class="image"> {% static "main/images/products/" as folder %} <img src="{{folder}}/{{product.0.image}}" title={{product.0.title}}> </td>
+                <td class="title"> <a href="{% url 'product' id=product.0.id %}">{{product.0.title}}</a> </td>
+                <td class="count">
+                    <form method="post" class="ms2_form form-inline ms-row-form-count" role="form">
+                        <input type="hidden" name="key" value="64e2a4ae436bfe9a2e0c4fa8527deaa9">
+                        <div class="form-group">
+                            <input  type="number" class="cart_counter" name="count" pid="82162" price="90" value="{{product.1}}" class="input-sm form-control js-rowcountcart"> <span class="hidden-xs">шт</span>
+                        </div>
+                    </form>
+                </td>
+                <td class="count" style="font-weight: bold;"> <span class="cart_row_price_sum">{% widthratio product.0.price 1 product.1 %}</span> ₸
+                    <div style="color: #969696;font-size: 0.9em; font-weight: normal;">(<span>{{product.0.price}}</span> ₸ / шт.)</div>
+                </td>
+                <td class="remove">
+                    <form action="/cart/delete/" method="POST" class="ms2_form">
+                        {% csrf_token %}
+
+                        <input type="hidden" name="id" value={{product.0.id}}>
+                        <button class="remove_from_cart" data-id={{product.0.id}} onclick="delete_product(this)">x</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+            
+            <tr class="footer">
+                <th class="total" colspan="2">Итого:</th>
+                <th class="total_count"> <span class="ms2_total_count">{{amount_of_products}}</span> товара </th>
+                <th class="total_cost"> <span class="ms2_total_cost" id="timerCost">{{total_sum}}</span> ₸ </th>
+                <th>&nbsp;</th>
+            </tr>
+        </tbody>
+        
+    </table>
+    <div style="display: flex;">
+        <form action="/cart/delete_all/" method="post" class="form_cart">
+            {% csrf_token %}
+    
+            <button type="submit" class="remove_from_cart w-50 mb-3" style="margin-right:auto;margin-left:auto">Удалить все</button>
+        </form>
+        <form action="{% url 'create_order' %}" method="post" class="form_cart">
+            {% csrf_token %}
+    
+            <button type="submit" class="remove_from_cart w-50 mb-3 payment_zakaz" style="margin-right:auto;margin-left:auto">Оформить заказ</button>
+        </form> 
+    </div>
+
+
+</div>
+
+{% endblock %}

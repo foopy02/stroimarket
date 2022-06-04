@@ -1,0 +1,116 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+
+{% block title %}
+{{product.title}}
+{% endblock %}
+
+{% block content %}
+<body>
+    <div class="container d-flex">
+        <div class="images_block"s>
+            {% static "main/images/products/" as folder %}
+
+            <img src="{{folder}}/{{product.image}}" alt="">
+        </div>
+        <div class="product_short_info">
+            <div class="title_of_product">
+                <h2>{{product.title}}</h1>
+                <p>Код продукта: {{product.id}}</p>
+                <p>В наличие: {{product.count}}</p>
+            </div>
+            <div class="price_of_product">
+                <span>Цена: {{product.price}} тг</span>
+            </div>
+            <div class="description">
+                {{product.description}}
+            </div>
+            <form action="" class="add_concrete_product">
+                <div class="inc_decr">                
+                    <svg class="decrement" onclick="decrement()" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11H7v-2h10v2z"/></svg>
+                    <input  type="number" class="number_of_product" name="number_of_product" id="number_of_product" min="1" value="1">
+                    <svg class="increment" onclick="increment()" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+                </div>
+                <button onclick="to_cart_with_amount(this)" data-id="{{product.id}}" class="to_cart_btn">В КОРЗИНУ</button>
+            </form>
+        </div>
+    </div>
+    <div class="container mt-3">
+        <div class="characteristic">
+            <h2 class="mb-3" >Характеристика:</h2>
+            <table class="chars">
+                {% for key, value in product.characteristics.items %}
+                <tr>
+                    <td>{{key}}: </td>
+                    <td>{{value}}</td>
+                </tr>
+                {% endfor%}
+            </table>
+        </div>
+    </div>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container">
+    <h2 class="mb-3" >Отзывы</h2>
+
+<div class="be-comment-block">
+    {% for comment in comments %}
+	<div class="be-comment">
+		<div class="be-comment-content">
+
+				<span class="be-comment-name">
+					Пользователь: <strong> {{comment.name}}</strong>
+				</span>
+
+				<span class="be-comment-time">
+					<i class="fa fa-clock-o"></i>
+					{{comment.created_date}}
+				</span>
+
+                <p class="be-comment-name" style="margin-bottom: 5;">
+                    Оценка: <strong> {{comment.stars}}/5</strong></p>
+                </span>
+
+			<p class="be-comment-text">
+				{{comment.comment}}
+			</p>
+		</div>
+	</div>
+    {% endfor %}
+	
+	<form class="form-block" method="POST" action="/leave_comment/">
+		<div class="row">
+			<div class="col-xs-12 col-sm-6">
+				<div class="form-group fl_icon">
+					<input class="form-input" type="text" name="name" placeholder="Ваше имя">
+				</div>
+			</div>
+            <div class="rating rating-large" dir="rtl">
+                <input type="radio" name="rate" id="5" value="5"/>
+                <label class="rating-label" for="5">&#9734</label>
+                <input type="radio" name="rate" id="4" value="4"/>
+                <label class="rating-label" for="4">&#9734</label>
+                <input type="radio" name="rate" id="3" value="3"/>
+                <label class="rating-label" for="3">&#9734</label>
+                <input type="radio" name="rate" id="2" value="2"/>
+                <label class="rating-label" for="2">&#9734</label>
+                <input type="radio" name="rate" id="1" value="1"/>
+                <label class="rating-label" for="1">&#9734</label>
+              </div>
+              <input type="hidden" id="stars" name="stars" value="0" >
+              <input type="hidden" name="id" value="{{product.id}}">
+			<div class="col-xs-12">									
+				<div class="form-group">
+					<textarea class="form-input" required name="comment" placeholder="Введите ваш отзыв"></textarea>
+				</div>
+			</div>
+			<button type="submit" class="btn btn-primary pull-right">Оставить отзыв</a>
+		</div>
+        {% csrf_token %}
+
+	</form>
+</div>
+</div>
+   
+</body>
+{% endblock%}

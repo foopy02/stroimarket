@@ -1,0 +1,54 @@
+{% extends 'main/base.html'%}
+{% load static%}
+
+{% block title %}
+Заказы
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <table class="table table-striped mb-3 mt-3" >
+        <tbody>
+            <tr class="header">
+                <th class="title">ID</th>
+                <th class="title">Пользователь</th>
+                <th class="count">Количество продуктов</th>
+                <th class="count">Стоимость</th>
+                <th class="title">Дата</th>
+                <th class="title">Статус</th>
+                <th class="remove">Удалить</th>
+            </tr>
+            {% for order in orders %}
+            <tr id="{{product.0.id}}">
+                <td class="title"> {{order.id}} </td>
+                <td class="title"> {{order.username}} </td>
+                <td class="title"> {{order.amount}} </td>
+                <td class="title"> <span>{{order.total}}</span> ₸ </td>
+                <td class="title"> {{order.datetime}} </td>
+                <td class="title"> {{order.status}} </td>
+                <td class="remove">
+                    <form action="{% url 'delete_order' id=order.id%}" method="POST" class="ms2_form">
+                        {% csrf_token %}
+
+                        <input type="hidden" name="id" value={{order.id}}>
+                        <button class="remove_from_cart" type="submit">x</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+            
+            <tr class="footer">
+                <th class="total" colspan="2">Итого:</th>
+                <th class="total_count"> <span class="ms2_total_count">{{orders|length}}</span> заказов </th>
+                <th class="total_cost"> <span class="ms2_total_cost" id="timerCost">{{total_sum}}</span> ₸ </th>
+                <th>&nbsp;</th>
+            </tr>
+        </tbody>
+        
+    </table>
+    
+
+
+</div>
+
+{% endblock %}
