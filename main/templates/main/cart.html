@@ -25,6 +25,13 @@
                         <input type="hidden" name="key" value="64e2a4ae436bfe9a2e0c4fa8527deaa9">
                         <div class="form-group">
                             <input  type="number" class="cart_counter" name="count" pid="82162" price="90" value="{{product.1}}" class="input-sm form-control js-rowcountcart"> <span class="hidden-xs">шт</span>
+                            
+                            <a href="{% url 'increment' id=product.0.id %}">
+                                <svg class="increment"  xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+                            </a>
+                            <a href="{% url 'decrement' id=product.0.id %}">
+                                <svg class="decrement"  xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11H7v-2h10v2z"/></svg>
+                            </a>
                         </div>
                     </form>
                 </td>

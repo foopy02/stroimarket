@@ -85,7 +85,7 @@ def create_order(request):
             amount = amount.count()
             list_of_products.append([product[0], amount])
             amount_of_products = amount
-            total_sum = product[0]["price"] * amount
+            total_sum += product[0]["price"] * amount
             checked_ids.append(item.product_id)
             
     now = datetime.now()
@@ -146,7 +146,7 @@ def cart(request):
                 amount = amount.count()
                 list_of_products.append([product[0], amount])
                 amount_of_products = amount
-                total_sum = product[0]["price"] * amount
+                total_sum += product[0]["price"] * amount
                 checked_ids.append(item.product_id)
         print(amount)
         return render(
@@ -220,8 +220,6 @@ def add_to_cart_with_amount(request):
     id_of_product = int(request.GET.get("id"))
     amount = int(request.GET.get("amount"))
     username = request.user.username
-    id_of_product = int(request.GET.get("id"))
-    username = request.user.username
     price = get_info_about_product(id_of_product)["price"]
     for i in range(amount):
         p = Cart(
@@ -230,6 +228,24 @@ def add_to_cart_with_amount(request):
         p.save()
     return JsonResponse({"status": "Succesfully done!"})
 
+def increment(request, id ):
+    id_of_product = int(id)
+    username = request.user.username
+    price = get_info_about_product(id_of_product)["price"]
+    p = Cart(
+        username=username, product_id=id_of_product, price=price, amount=1
+    )
+    p.save()
+    return redirect('cart')
+
+def decrement(request, id ):
+    id_of_product = int(id)
+    username = request.user.username
+    print(Cart.objects.filter(username=username,product_id=id_of_product))    
+    for i in Cart.objects.filter(username=username,product_id=id_of_product):
+        i.delete()
+        break
+    return redirect('cart')
 
 def delete_all_products_from_cart(request):
     username = request.user.username
